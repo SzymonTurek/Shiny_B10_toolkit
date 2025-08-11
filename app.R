@@ -9,7 +9,7 @@ library(gplots)
 
 
 
-annotation_df <- read.csv("Annoteation.csv", header = TRUE)
+annotation_df <- read.csv(file.path(getwd(),"Annoteation.csv"), header = TRUE)
 
 # Define UI using fluidPage
 ui <- navbarPage("B10 Cucumber Toolikit",
@@ -473,7 +473,7 @@ server <- function(input, output, session) {
  #}) 
  
 proteins_seq_app4 <- function(genes, fasta){
-    fasta <- readDNAStringSet("proteome_only_longest.fasta")
+    fasta <- readDNAStringSet(file.path(getwd(),"proteome_only_longest.fasta"))
     #req()
 
     #asta <- readDNAStringSet("proteome_only_longest.fasta")
