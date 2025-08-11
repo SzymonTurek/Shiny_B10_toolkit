@@ -9,7 +9,7 @@ library(gplots)
 
 
 
-annotation_df <- read.csv("Annoteation_B10_ordered_blast_9930.csv", header = TRUE)
+annotation_df <- read.csv("Annoteation.csv", header = TRUE)
 
 # Define UI using fluidPage
 ui <- navbarPage("B10 Cucumber Toolikit",
