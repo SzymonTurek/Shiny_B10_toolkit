@@ -2,6 +2,7 @@
 This shiny application combines various applications that enable the analysis of B10 cucumber data. 
 
 <img src="images/Img1.png" alt="My Image" width="400"/>
+<img src="images/Img2.png" alt="My Image" width="400"/>
 ## Description
 These applications include:
 - PlnatRegMap ID converter - converts gene names from the B10 genome to names contained in the PlantRegMap database
