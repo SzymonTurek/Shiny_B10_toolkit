@@ -473,7 +473,7 @@ server <- function(input, output, session) {
  #}) 
  
 proteins_seq_app4 <- function(genes, fasta){
-    fasta <- readDNAStringSet("proteome_only_longest.fasta")
+    fasta <- readAAStringSet("proteome_only_longest.fasta")
     #req()
 
     #asta <- readDNAStringSet("proteome_only_longest.fasta")
@@ -491,7 +491,7 @@ proteins_seq_app4 <- function(genes, fasta){
   output$proteins_app4 <- renderTable({
     req(input$gene_input_app4)
     library(Biostrings)
-    fasta <- readDNAStringSet("proteome_only_longest.fasta")
+    fasta <- readAAStringSet("proteome_only_longest.fasta")
     protein_ids <- read_protein_ids()
     proteins_seq_app4(protein_ids, fasta)
    # 
@@ -510,7 +510,7 @@ proteins_seq_app4 <- function(genes, fasta){
     },
     content = function(file) {
       protein_ids <- read_protein_ids()
-      fasta <- readDNAStringSet("proteome_only_longest.fasta")
+      fasta <- readAAStringSet("proteome_only_longest.fasta")
       print(head(protein_ids))
       print(head(names(fasta)))
       filtered_fasta <- fasta[protein_ids]
