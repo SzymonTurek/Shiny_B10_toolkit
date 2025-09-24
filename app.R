@@ -196,8 +196,46 @@ ui <- navbarPage("B10 Cucumber Toolikit",
                  ),
                  
                  tabPanel("App 6",
+                          titlePanel('ENTREZ ID converter'),
+                          sidebarLayout(
+                            sidebarPanel(
+                              textAreaInput("gene_input_app6", "Paste Gene IDs Here:",
+                                            placeholder = "e.g.\n101206362 \n105435726 \n101207820 \n101207575",
+                                            rows = 10, width = "100%"),
+                              helpText("Paste your gene list (separated by newlines, commas, or spaces)."),
+                              submitButton("Submit")
+                              
+                            )
+                            ,
+                            mainPanel(
+                              textOutput("greeting_app2"),
+                              DTOutput("contents_app6")
+                            ))
+                          
+                          
+                 ), 
+                 tabPanel("App 7",
+                             titlePanel('PlnatRegMap ID converter'),
+                             sidebarLayout(
+                               sidebarPanel(
+                                 textAreaInput("gene_input7", "Paste Gene IDs Here:",
+                                               placeholder = "e.g.\nCucsa.196790\nCucsa.196760\nCucsa.196750\n",
+                                               rows = 10, width = "100%"),
+                                 helpText("Paste your gene list (separated by newlines, commas, or spaces)."),
+                                 submitButton("Submit")
+                                 
+                               )
+                               ,
+                               mainPanel(
+                       
+                                 DTOutput("contents7")
+                               ))
+                 )
+                          ,
+                 
+                 tabPanel("App 8",
                           fluidPage(
-                            titlePanel("App 2"),
+                            titlePanel("App 8"),
                             sidebarLayout(
                               sidebarPanel(
                                 textInput("text", "Enter text:")
@@ -209,9 +247,9 @@ ui <- navbarPage("B10 Cucumber Toolikit",
                           )
                  ),
                  
-                 tabPanel("App 7",
+                 tabPanel("App 9",
                           fluidPage(
-                            titlePanel("App 2"),
+                            titlePanel("App 9"),
                             sidebarLayout(
                               sidebarPanel(
                                 textInput("text", "Enter text:")
@@ -519,6 +557,74 @@ proteins_seq_app4 <- function(genes, fasta){
      
     }
   )
+  
+  #App6 logic 
+  # App 2 logic
+  filtered_data_app6 <- reactive({
+    req(input$gene_input_app6)
+    genes <- unlist(strsplit(input$gene_input_app6, "[,\n ]+"))
+    genes <- genes[genes != ""]
+    print(genes)
+    annotation_df_app6 <- annotation_df %>% filter(X9930_ENTREZ_ID %in% genes)
+    annotation_df_app6 <- annotation_df_app6[,c("X9930_ENTREZ_ID", "Gene.ID")]
+    return(annotation_df_app6)
+  })
+  
+  
+  output$contents_app6 <- renderDT({
+    datatable(rownames = FALSE,
+              filtered_data_app6(),
+              extensions = 'Buttons',
+              options = list(
+                pageLength = -1,
+                dom = 'Bfrtip',         # Show buttons, filter, table
+                buttons = list(
+                  'copy', 'csv',              # Copy visible columns to clipboard
+                  list(
+                    extend = 'colvis',  # Column visibility button
+                    columns = 0:(ncol(filtered_data_app6())-1)  # Allow all columns to be toggled
+                  )
+                ),
+                
+                scrollX = TRUE, scrollY = "300px"       # Enable horizontal scrolling if needed
+              ),
+              
+              selection = 'none'
+    )
+  })
+  
+  #App 7 logic
+  filtered_data7 <- reactive({
+    req(input$gene_input7)
+    genes <- unlist(strsplit(input$gene_input7, "[,\n ]+"))
+    genes <- genes[genes != ""]
+    print(genes)
+    annotation_df_app7 <- annotation_df %>% filter(PlantRegMap_ID %in% genes)
+    annotation_df_app7 <- annotation_df_app7[,c("PlantRegMap_ID", "Gene.ID")]
+    return(annotation_df_app7)
+  })
+  
+  output$contents7 <- renderDT({
+    datatable(rownames = FALSE,
+              filtered_data7(),
+              extensions = 'Buttons',
+              options = list(
+                pageLength = -1,
+                dom = 'Bfrtip',         # Show buttons, filter, table
+                buttons = list(
+                  'copy', 'csv',              # Copy visible columns to clipboard
+                  list(
+                    extend = 'colvis',  # Column visibility button
+                    columns = 0:(ncol(filtered_data7())-1)  # Allow all columns to be toggled
+                  )
+                ),
+                
+                scrollX = TRUE, scrollY = "300px"       # Enable horizontal scrolling if needed
+              ),
+              
+              selection = 'none'
+    )
+  })
   
   
   
